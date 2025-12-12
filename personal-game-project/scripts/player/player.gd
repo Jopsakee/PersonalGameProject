@@ -125,9 +125,23 @@ func _play_run() -> void:
 
 
 func _play_shoot() -> void:
-	anim.flip_h = (_facing == "right")
-	if anim.animation != "shoot":
-		anim.play("shoot")
+	match _facing:
+		"left":
+			anim.flip_h = false
+			if anim.animation != "shoot_side":
+				anim.play("shoot_side")
+		"right":
+			anim.flip_h = true    # mirror left-facing side shoot
+			if anim.animation != "shoot_side":
+				anim.play("shoot_side")
+		"up":
+			anim.flip_h = false
+			if anim.animation != "shoot_up":
+				anim.play("shoot_up")
+		"down":
+			anim.flip_h = false
+			if anim.animation != "shoot":
+				anim.play("shoot")
 
 
 func apply_damage(amount: int) -> void:
