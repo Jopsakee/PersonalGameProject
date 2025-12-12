@@ -93,7 +93,6 @@ animations = [{
 radius = 10.777856
 
 [node name="Grunt" type="CharacterBody2D" groups=["enemy"]]
-scale = Vector2(3, 3)
 script = ExtResource("1_a6gui")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
