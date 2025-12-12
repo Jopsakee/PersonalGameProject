@@ -13,9 +13,23 @@ func set_direction(dir: Vector2) -> void:
 
 
 func _process(delta: float) -> void:
+	# Move bullet in its direction
 	if direction != Vector2.ZERO:
 		global_position += direction * speed * delta
 
+	# Lifetime countdown
 	_time_alive += delta
 	if _time_alive >= lifetime:
 		queue_free()
+
+
+func _on_body_entered(body: Node2D) -> void:
+	# Ignore hitting the player so we don't destroy the bullet on spawn
+	if body.is_in_group("player"):
+		return
+
+	# Damage anything that can take damage
+	if body.has_method("apply_damage"):
+		body.apply_damage(damage)
+
+	queue_free()

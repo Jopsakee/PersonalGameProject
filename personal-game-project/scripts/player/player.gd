@@ -45,17 +45,17 @@ func _spawn_bullet() -> void:
 	if bullet_scene == null:
 		return
 
-	var bullet: Node2D = bullet_scene.instantiate()
+	var bullet: Area2D = bullet_scene.instantiate()
 
-	# Start at player
-	bullet.global_position = global_position
-
-	# Aim toward mouse
+	# Direction from player to mouse
 	var dir: Vector2 = (get_global_mouse_position() - global_position).normalized()
+
+	# Spawn a bit in front of the player so it's less likely to overlap
+	bullet.global_position = global_position + dir * 10.0
 
 	# Send direction to bullet
 	if bullet.has_method("set_direction"):
 		bullet.set_direction(dir)
 
-	# Add to level
+	# Add to the same parent as the player (level scene)
 	get_parent().add_child(bullet)
