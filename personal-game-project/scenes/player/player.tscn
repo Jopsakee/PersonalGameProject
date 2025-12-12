@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3 uid="uid://cyg63h2f7tktx"]
+
+[ext_resource type="Script" uid="uid://dyeg1k7xrlgnr" path="res://scripts/player/player.gd" id="1_8afob"]
+[ext_resource type="Texture2D" uid="uid://dnx17sshxn7ne" path="res://assets/Aim.png" id="2_dovo2"]
+[ext_resource type="Texture2D" uid="uid://dscrt4x0cfjim" path="res://assets/redbullet.png" id="2_gmlin"]
+
+[sub_resource type="GDScript" id="GDScript_lvxji"]
+script/source = "extends Area2D
+
+@export var speed: float = 800.0
+@export var lifetime: float = 1.5
+@export var damage: int = 10
+
+var _time_alive: float = 0.0
+var direction: Vector2 = Vector2.ZERO
+
+
+func _ready() -> void:
+	# Set the direction based on the bullet's current rotation
+	# (assumes Player sets global_rotation when spawning)
+	direction = Vector2.RIGHT.rotated(global_rotation)
+
+
+func _physics_process(delta: float) -> void:
+	# Move in the chosen direction every physics frame
+	global_position += direction * speed * delta
+
+	_time_alive += delta
+	if _time_alive >= lifetime:
+		queue_free()
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.has_method(\"apply_damage\"):
+		body.apply_damage(damage)
+	queue_free()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mx1hr"]
+radius = 6.0827627
+
+[sub_resource type="PackedScene" id="PackedScene_p47bc"]
+_bundled = {
+"conn_count": 1,
+"conns": PackedInt32Array(1073741827, 1073741826, 13, 12, 2, 0, 0),
+"editable_instances": [],
+"names": PackedStringArray("Bullet", "Area2D", "script", "speed", "lifetime", "Sprite2D", "Sprite2D", "scale", "texture", "CollisionShape2D", "CollisionShape2D", "shape", "_on_body_entered", "body_entered"),
+"node_count": 3,
+"node_paths": [NodePath("."), NodePath("."), NodePath("."), NodePath(".")],
+"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 3, 2, 0, 3, 1, 4, 2, 0, 1073741824, 0, 6, 5, -1, 2, 7, 3, 8, 4, 0, 1073741825, 0, 10, 9, -1, 1, 11, 5, 0),
+"variants": [SubResource("GDScript_lvxji"), 400.0, 10.0, Vector2(0.5, 0.5), ExtResource("2_gmlin"), SubResource("CircleShape2D_mx1hr")],
+"version": 3
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8afob"]
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+script = ExtResource("1_8afob")
+bullet_scene = SubResource("PackedScene_p47bc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.24999934, -2.2499988)
+scale = Vector2(0.5, 0.672)
+texture = ExtResource("2_dovo2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_8afob")

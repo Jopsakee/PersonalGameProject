@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://5ghn64esqi1x"]
+
+[ext_resource type="PackedScene" uid="uid://cyg63h2f7tktx" path="res://scenes/player/player.tscn" id="1_yv0av"]
+[ext_resource type="PackedScene" uid="uid://du7rr4o5xwqnl" path="res://scenes/weapons/bullet.tscn" id="2_x68ck"]
+[ext_resource type="PackedScene" uid="uid://cocycxoe7p2w3" path="res://scenes/enemies/grunt.tscn" id="3_gyqsl"]
+
+[node name="TestRoom" type="Node2D"]
+scale = Vector2(2, 2)
+
+[node name="Player" parent="." instance=ExtResource("1_yv0av")]
+position = Vector2(531, 274)
+bullet_scene = ExtResource("2_x68ck")
+
+[node name="Grunt" parent="." instance=ExtResource("3_gyqsl")]
+position = Vector2(255, 266)
