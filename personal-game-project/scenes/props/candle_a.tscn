@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://kjdqv8xwf8ti"]
+
+[ext_resource type="Texture2D" uid="uid://cdfy28bix5vlh" path="res://assets/catacombs/candleA_01.png" id="1_lebb6"]
+[ext_resource type="Texture2D" uid="uid://biqtvyo5e80b8" path="res://assets/catacombs/candleA_02.png" id="2_82hhp"]
+[ext_resource type="Texture2D" uid="uid://jxpjuxqbs23v" path="res://assets/catacombs/candleA_03.png" id="3_8desv"]
+[ext_resource type="Texture2D" uid="uid://dvrk5s0avocsg" path="res://assets/catacombs/candleA_04.png" id="4_ntval"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cfglh"]
+atlas = ExtResource("1_lebb6")
+region = Rect2(0, 0, 7, 14)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4fwuc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cfglh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_82hhp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_8desv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ntval")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}]
+
+[node name="CandleA" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_4fwuc")
+animation = &"idle"
