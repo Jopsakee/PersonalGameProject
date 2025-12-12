@@ -1,25 +1,52 @@
 extends CanvasLayer
 
-@onready var health_label: Label = $HealthLabel
+@onready var enemy_status_label: Label = $EnemyStatusLabel
+@onready var name_label: Label = $PlayerFrame/NameLabel
+@onready var health_bar: ProgressBar = $PlayerFrame/HealthBar
 
 var player: Node = null
+var level: Node = null
 
 
 func _ready() -> void:
-	# Find the player in the "player" group
+	# Find the player via group
 	player = get_tree().get_first_node_in_group("player")
-	if player == null:
-		print("HUD: No player found in group 'player'!")
+
+	# Level controller is on the current scene root
+	level = get_tree().current_scene
+
+	# Set name label once (optional)
+	name_label.text = "Plague Doctor"
 
 
 func _process(delta: float) -> void:
+	_update_health()
+	_update_enemy_status()
+
+
+func _update_health() -> void:
 	if player == null or not is_instance_valid(player):
 		return
 
-	# We expect player to have 'health' and 'max_health' variables
-	if "health" in player and "max_health" in player:
-		var current_hp: int = player.health
-		var max_hp: int = player.max_health
-		health_label.text = "HP: %d / %d" % [current_hp, max_hp]
+	# Ensure bar max matches player max health
+	if "max_health" in player:
+		health_bar.max_value = player.max_health
+
+	if "health" in player:
+		health_bar.value = clamp(player.health, 0, int(health_bar.max_value))
+
+
+func _update_enemy_status() -> void:
+	if level == null or not is_instance_valid(level):
+		return
+
+	if level.has_method("get_enemies_remaining") and level.has_method("is_extraction_unlocked"):
+		var remaining: int = level.get_enemies_remaining()
+		var unlocked: bool = level.is_extraction_unlocked()
+
+		if unlocked:
+			enemy_status_label.text = "Extraction available! Find the stairs to return to the hub."
+		else:
+			enemy_status_label.text = "Enemies remaining: %d" % remaining
 	else:
-		health_label.text = "HP: ???"
+		enemy_status_label.text = ""

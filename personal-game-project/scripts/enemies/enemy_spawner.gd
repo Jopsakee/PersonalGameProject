@@ -14,7 +14,6 @@ func _ready() -> void:
 	randomize()
 	_timer = spawn_interval
 
-	# Collect all child nodes that can be used as spawn points
 	_spawn_points.clear()
 	for child in get_children():
 		if child is Node2D:
@@ -60,3 +59,15 @@ func _spawn_enemy() -> void:
 	get_parent().add_child(enemy)
 
 	_spawned += 1
+
+
+func all_spawned() -> bool:
+	return _spawned >= spawn_count
+
+
+func get_total_to_spawn() -> int:
+	return spawn_count
+
+
+func get_spawned_count() -> int:
+	return _spawned
