@@ -5,7 +5,15 @@ extends CharacterBody2D
 @export var bullet_scene: PackedScene
 @export var fire_rate: float = 6.0 # bullets per second
 
+@export var max_health: int = 100
+var health: int = 0
+
 var _fire_cooldown: float = 0.0
+
+
+func _ready() -> void:
+	# Initialize health
+	health = max_health
 
 
 func _physics_process(delta: float) -> void:
@@ -50,12 +58,23 @@ func _spawn_bullet() -> void:
 	# Direction from player to mouse
 	var dir: Vector2 = (get_global_mouse_position() - global_position).normalized()
 
-	# Spawn a bit in front of the player so it's less likely to overlap
+	# Spawn slightly in front of the player so it doesn't collide with them
 	bullet.global_position = global_position + dir * 10.0
 
-	# Send direction to bullet
 	if bullet.has_method("set_direction"):
 		bullet.set_direction(dir)
 
-	# Add to the same parent as the player (level scene)
 	get_parent().add_child(bullet)
+
+
+func apply_damage(amount: int) -> void:
+	health -= amount
+	print("Player took ", amount, " damage. Health: ", health, "/", max_health)
+
+	if health <= 0:
+		die()
+
+
+func die() -> void:
+	print("Player died. Reloading scene.")
+	get_tree().reload_current_scene()

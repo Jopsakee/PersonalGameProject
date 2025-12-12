@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cocycxoe7p2w3"]
+[gd_scene load_steps=17 format=3 uid="uid://cocycxoe7p2w3"]
 
 [ext_resource type="Script" uid="uid://cfle7puxauovb" path="res://scripts/enemies/grunt.gd" id="1_a6gui"]
 [ext_resource type="Texture2D" uid="uid://c327gvfslrr7h" path="res://assets/rat/Rat_Idle.png" id="2_0woqi"]
@@ -89,6 +89,9 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_uxy5n"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_0woqi"]
+radius = 10.777856
+
 [node name="Grunt" type="CharacterBody2D" groups=["enemy"]]
 scale = Vector2(3, 3)
 script = ExtResource("1_a6gui")
@@ -98,4 +101,16 @@ sprite_frames = SubResource("SpriteFrames_r8uvr")
 animation = &"run"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.6666667, 11.333334)
+scale = Vector2(0.82785165, 0.83896446)
 shape = SubResource("CircleShape2D_uxy5n")
+
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(1.6666665, 11.666666)
+scale = Vector2(0.9591883, 1.0301024)
+shape = SubResource("CircleShape2D_0woqi")
+
+[connection signal="body_entered" from="AttackArea" to="." method="_on_attack_area_body_entered"]
+[connection signal="body_exited" from="AttackArea" to="." method="_on_attack_area_body_exited"]
